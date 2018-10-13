@@ -12,7 +12,7 @@ use na::base::Matrix3;
 use na::base::Matrix3x1;
 
 fn opt_anaglyph_gen(li_p:&image::Rgb<u8>, ri_p:&image::Rgb<u8>) -> Vec<u8> {
-    println!("Building pixel value");
+    //println!("Building pixel value");
     let _l_vec = li_p.clone();
     let _r_vec = ri_p.clone();
     let mut out_vec = Vec::new();
@@ -32,8 +32,6 @@ fn opt_anaglyph_gen(li_p:&image::Rgb<u8>, ri_p:&image::Rgb<u8>) -> Vec<u8> {
     out_vec.push(o_m[2] as u8);
 
     out_vec
-
-
 }
 
 fn main() {
@@ -42,9 +40,7 @@ fn main() {
     let _r_img = image::open("./inputImages/imageRight.jpg").unwrap().to_rgb();
     let mut handles = vec![];
     // The dimensions method returns the images width and height.
-    let top_sec = (_r_img.height() as f32 * 0.25) as u32;
-    let mid_sec = (_r_img.height() as f32 * 0.50) as u32;
-    let bot_sec = (_r_img.height() as f32 * 0.75) as u32;
+    //let top_sec = (_r_img.height() as f32 * 0.25) as u32;
     let width = _l_img.width();
     let height = _l_img.height();
     
@@ -53,64 +49,32 @@ fn main() {
     let _mod_img = Arc::new(Mutex::new(out_img));
     let _l_img_mut = Arc::new(Mutex::new(_l_img));
     let _r_img_mut = Arc::new(Mutex::new(_r_img));
+    let loop_counter = 11;
+    let _h_ = height.clone();
 
-    let _mod_img_a = Arc::clone(&_mod_img);
-    let _l_img_a = Arc::clone(&_l_img_mut);
-    let _r_img_a = Arc::clone(&_r_img_mut);
-
-    let top_thread = thread::spawn(move || {
-        for _i in 0..width {
-            for _it in 0..top_sec {
-                let mut _img  = _mod_img_a.lock().unwrap();
-                let _l_o = _l_img_a.lock().unwrap();
-                let _r_o = _r_img_a.lock().unwrap();
-                let temp_vec = opt_anaglyph_gen(_l_o.get_pixel(_i,_it),_r_o.get_pixel(_i,_it));
-                _img.get_pixel_mut(_i,_it).data = [temp_vec[0],temp_vec[1],temp_vec[2]];
-                thread::sleep(Duration::from_millis(1));
-                println!("Printed pixel value up top");
+    for el in 1..loop_counter {
+        
+        let _mod_img_a = Arc::clone(&_mod_img);
+        let _l_img_a = Arc::clone(&_l_img_mut);
+        let _r_img_a = Arc::clone(&_r_img_mut);
+        let t_l = (el as f32/loop_counter as f32);
+        let _height_a = (_h_ as f32 * t_l) as u32;
+        println!("Height: {:?}",_height_a);
+        let handle = thread::spawn(move || {
+            for _i in 0..width {
+                for _it in 0.._height_a {
+                    let mut _img  = _mod_img_a.lock().unwrap();
+                    let _l_o = _l_img_a.lock().unwrap();
+                    let _r_o = _r_img_a.lock().unwrap();
+                    let temp_vec = opt_anaglyph_gen(_l_o.get_pixel(_i,_it),_r_o.get_pixel(_i,_it));
+                    _img.get_pixel_mut(_i,_it).data = [temp_vec[0],temp_vec[1],temp_vec[2]];
+                }
+                
             }
-            
-        }
-    });
-    handles.push(top_thread);
-
-    let _mod_img_a = Arc::clone(&_mod_img);
-    let _l_img_a = Arc::clone(&_l_img_mut);
-    let _r_img_a = Arc::clone(&_r_img_mut);
-    let mid_thread = thread::spawn(move || {
-        for _j in 0..width {
-            for _jm in top_sec + 1..mid_sec {
-                let mut _img  = _mod_img_a.lock().unwrap();
-                let _l_o = _l_img_a.lock().unwrap();
-                let _r_o = _r_img_a.lock().unwrap();
-                let temp_vec = opt_anaglyph_gen(_l_o.get_pixel(_j,_jm),_r_o.get_pixel(_j,_jm));
-                _img.get_pixel_mut(_j,_jm).data = [temp_vec[0],temp_vec[1],temp_vec[2]];
-                thread::sleep(Duration::from_millis(1));
-                println!("Printed pixel value in the middle");
-            }
-            
-        }
-    });
-    handles.push(mid_thread);
-
-    let _mod_img_a = Arc::clone(&_mod_img);
-    let _l_img_a = Arc::clone(&_l_img_mut);
-    let _r_img_a = Arc::clone(&_r_img_mut);
-    let bot_thread = thread::spawn(move || {
-        for _k in 0..width {
-            for _kb in mid_sec + 1..height {
-                let mut _img  = _mod_img_a.lock().unwrap();
-                let _l_o = _l_img_a.lock().unwrap();
-                let _r_o = _r_img_a.lock().unwrap();
-                let temp_vec = opt_anaglyph_gen(_l_o.get_pixel(_k,_kb),_r_o.get_pixel(_k,_kb));
-                _img.get_pixel_mut(_k,_kb).data = [temp_vec[0],temp_vec[1],temp_vec[2]];
-                thread::sleep(Duration::from_millis(1));
-                println!("Printed Pixel Value in the middle");
-            }
-            
-        }
-    });
-    handles.push(bot_thread);
+        });
+        handles.push(handle);
+}
+   
 
     for handle in handles {
         handle.join().unwrap();
