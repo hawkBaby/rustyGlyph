@@ -2,3 +2,5 @@
 **/*.rs.bk
 *.jpg
 *.png
+/inputImages/*
+/outputImage/*
