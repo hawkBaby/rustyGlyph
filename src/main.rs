@@ -35,11 +35,12 @@ fn opt_anaglyph_gen(li_p:&image::Rgb<u8>, ri_p:&image::Rgb<u8>) -> Vec<u8> {
 
 fn main() {
     println!("....Rusty Anaglyph generator....");
-    let _l_img = image::open("./inputImages/imageLeft.jpg").unwrap().to_rgb();
-    let _r_img = image::open("./inputImages/imageRight.jpg").unwrap().to_rgb();
+    let _l_img = image::open("./inputImages/imageLeft.jpeg").unwrap().to_rgb();
+    let _r_img = image::open("./inputImages/imageRight.jpeg").unwrap().to_rgb();
+    println!("....Loaded Input Images....");
     let mut handles = vec![];
-    let width = _l_img.width();
-    let height = _l_img.height();
+    let width = _r_img.width();
+    let height = _r_img.height();
     
     let out_img = image::ImageBuffer::<Rgb<u8>, Vec<u8>>::new(width, height);
 
@@ -78,7 +79,6 @@ fn main() {
         handle.join().unwrap();
 
     }
-
    let out_val = _mod_img.lock().unwrap();
-   out_val.save("outputImage/output.jpg").unwrap();
+   out_val.save("outputImage/output.png").unwrap();
 }
