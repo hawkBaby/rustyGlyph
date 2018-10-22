@@ -1,10 +1,9 @@
 [package]
-name = "anaglyph"
+name = "rustglyph"
 version = "0.2.0"
 authors = ["Jad Pamment <jad.pamment@gmail.com>"]
 
 [dependencies]
-#image = "0.20.0"
-#nalgebra = "0.16"
+image = "0.20.0"
+nalgebra = "0.16"
 clap = "2.32.0"
-#rustGlyph = { path = "./lib.rs"}

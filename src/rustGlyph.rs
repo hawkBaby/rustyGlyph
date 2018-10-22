@@ -1,5 +1,4 @@
-
-pub mod rustGlyph {
+pub mod rust_glyph {
 
 extern crate image;
 extern crate nalgebra as na;
@@ -11,11 +10,10 @@ use self::image::Rgb;
 use std::thread;
 use std::sync::{Mutex, Arc};
 //use std::time::Duration;
-use rustGlyph::na::base::Matrix3;
-use rustGlyph::na::base::Matrix3x1;
+use rustGlyph::rust_glyph::na::base::Matrix3;
+use rustGlyph::rust_glyph::na::base::Matrix3x1;
 
-
-    fn opt_anaglyph_gen(li_p:&image::Rgb<u8>, ri_p:&image::Rgb<u8>) -> Vec<u8> {
+    pub fn opt_anaglyph_gen(li_p:&image::Rgb<u8>, ri_p:&image::Rgb<u8>) -> Vec<u8> {
         let _l_vec = li_p.clone();
         let _r_vec = ri_p.clone();
         let mut out_vec = Vec::new();
@@ -37,7 +35,7 @@ use rustGlyph::na::base::Matrix3x1;
         out_vec
     }
 
-    fn rust_loop() {
+    pub fn rust_loop() {
         println!("....Rusty Anaglyph generator....");
         let _l_img = image::open("./inputImages/imageLeft.jpeg").unwrap().to_rgb();
         let _r_img = image::open("./inputImages/imageRight.jpeg").unwrap().to_rgb();
