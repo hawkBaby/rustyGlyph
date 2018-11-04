@@ -1,9 +1,9 @@
-#[macro_use]
 mod rustGlyph;
-extern crate clap;
-
-use clap::App;
 use rustGlyph::rust_glyph::*;
+
+#[macro_use]
+extern crate clap;
+use clap::App;
 
 fn main() {
     let config_yaml = load_yaml!("cli.yaml");

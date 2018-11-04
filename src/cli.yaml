@@ -9,10 +9,14 @@ args:
         value_name: FILE
         help: Sets a custom config file
         takes_value: true
-    - INPUT:
-        help: Sets the input file to use
+    - filel:
+        help: sets the file on the left side
         required: true
         index: 1
+    - filer:
+        help: sets the file on the right hand side
+        required: true
+        index: 2
     - verbose:
         short: v
         multiple: true

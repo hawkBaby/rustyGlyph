@@ -27,6 +27,5 @@ Do what you want. This project has an MIT licence.
 * Error handling for missing images
 * Date stamp inclusion on output
 * Configs for Input/output image types
-* Command line interface
 * Proper unit testing
 * dynamic import types
