@@ -13,6 +13,8 @@ Boredom and I wanted to improve my Rust Skills.
 
 Install the latest rust compiler and then run the following command in the root folder `cargo run --release`
 
+Or alternatively in repl.it [![Run on Repl.it](https://repl.it/badge/github/hawkBaby/rustyGlyph)](https://repl.it/github/hawkBaby/rustyGlyph)
+
 ## Can I get involved? 
 
 Do what you want. This project has an MIT licence. 
